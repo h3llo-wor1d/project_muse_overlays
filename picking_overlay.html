@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        @font-face {
+            font-family: main;
+            src: url("digibop-regular.otf");
+        }
+        body {
+            font-family: main;
+            margin: 0;
+            width: 1920px;
+            height: 1080px;
+        }
+        .centerPiece {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 45pt;
+            z-index: 999;
+        }
+        #myVideo {
+            position: absolute;
+            z-index: -999;
+            width: 1920px;
+            height: 1080px;
+        }
+        red {
+            color: red;
+        }
+
+        @keyframes anim_blink_time {
+            to {
+            visibility: hidden;
+            }
+        }
+
+        #reginfo {
+            visibility: hidden;
+        }
+    </style>  
+    <script src="scripts/client.js"></script>
+    <script>
+        function startTimer() {
+            let display = document.getElementById("timeDisplay");
+            display.innerText = "60 seconds";
+            display.style.color = "green";
+            document.getElementById("reginfo").style.visibility = "visible"
+            let time = 60;
+            let t = setInterval(() => {
+                time--;
+                display.innerText = `${time} seconds`;
+                if (time == 30) {
+                    display.style.animation="anim_blink_time 1s steps(5, start) infinite";
+                    display.style.color="yellow";
+                } else if (time == 19) {
+                    display.style.animation="anim_blink_time .5s steps(5, start) infinite";
+                    display.style.color="red";
+                } else if (time == 10) {
+                    display.style.animation="anim_blink_time .25s steps(5, start) infinite";
+                }
+                else if (time == 0) {
+                    display.style.animation="";
+                    display.innerText="";
+                    clearInterval(t);
+                }
+            }, 1000)
+        }
+        var currentUser = "";
+        const webClient = new Client("chatting", {
+            "newPullVC": (data) => {
+                console.log("new pull received...?")
+                console.log(data.username);
+                startTimer();
+                document.getElementById("name").innerText = data.username;
+            }
+        }) // New override options for my clients so I don't have to rewrite it every script lol
+        setTimeout(async () => {
+            await webClient.run();
+        });
+    </script>
+</head>
+<body>
+    <div class="centerPiece">
+        Now Picking Our Next Registrant!<br/>
+        <div style="font-size: 30pt; margin-top: 15px;">
+            <span id="reginfo"><span id="name">...</span>, you have <span id="timeDisplay">60 seconds</span> to join the voice chat or you will be skipped!</span>
+        </div>
+    </div>
+</body>
+</html>

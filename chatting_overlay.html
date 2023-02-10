@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        @font-face {
+            font-family: main;
+            src: url("digibop-regular.otf");
+        }
+        body {
+            font-family: main;
+            margin: 0;
+            width: 1920px;
+            height: 1080px;
+            background: url("template.png");
+            background-size: 1920px 1080px;
+            background-repeat: no-repeat;
+            font-size: 16pt;
+        }
+        .namePos {
+            position: absolute;
+            bottom: 210px;
+            left: 61px;
+        }
+    </style>   
+    <script src="scripts/client.js"></script>
+    <script>
+        var currentUser = "";
+        const handleNewUser = (data) => {
+            console.log("... attempting to get username...");
+            console.log(data);
+            document.getElementById("currentUser").innerText = data.username;
+        }
+        const webClient = new Client("chatting", {
+            "newUser": handleNewUser
+        }) // New override options for my clients so I don't have to rewrite it every script lol
+        setTimeout(async () => {
+            await webClient.run();
+        });
+    </script>
+</head>
+<body>
+    <div class="namePos" id="currentUser">loading...</div>
+</body>
+</html>
