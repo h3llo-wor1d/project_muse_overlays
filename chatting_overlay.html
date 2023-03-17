@@ -10,15 +10,15 @@
             margin: 0;
             width: 1920px;
             height: 1080px;
-            background: url("template.png");
-            background-size: 1920px 1080px;
-            background-repeat: no-repeat;
             font-size: 16pt;
+            color: "#fff";
+            filter: drop-shadow(0px 0px .75px black) drop-shadow(0px 0px .75px black) drop-shadow(0px 0px .75px black) drop-shadow(0px 0px .75px black);
         }
         .namePos {
             position: absolute;
             bottom: 210px;
             left: 61px;
+            color: white;
         }
     </style>   
     <script src="scripts/client.js"></script>
@@ -39,5 +39,6 @@
 </head>
 <body>
     <div class="namePos" id="currentUser">loading...</div>
+    <img src="template.png" style="position: absolute; z-index: -11; top:0; filter: invert(1);" width="1920px" height="1080px" />
 </body>
 </html>
