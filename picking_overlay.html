@@ -70,7 +70,7 @@
         var currentUser = "";
         const webClient = new Client("chatting", {
             "newPullVC": (data) => {
-                document.getElementById("tojoin").innerHTML = "to join the voice chat or you will be skipped!";
+                document.getElementById("tojoin").innerText = "to join the voice chat or you will be skipped!";
                 console.log("new pull received...?")
                 console.log(data.username);
                 startTimer();
@@ -79,7 +79,7 @@
             "userJoinVC": () => {
                 clearInterval(t);
                 let name = document.getElementById("name").innerText;
-                document.getElementById("tojoin").innerHTML = "";
+                document.getElementById("tojoin").innerText = "";
                 display.style.color = "black";
                 display.innerText = "been picked!";
             }
