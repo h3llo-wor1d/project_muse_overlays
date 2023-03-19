@@ -19,69 +19,50 @@
             font-size: 45pt;
             z-index: 999;
         }
-        #myVideo {
-            position: absolute;
-            z-index: -999;
-            width: 1920px;
-            height: 1080px;
-        }
-        red {
-            color: red;
-        }
-
         @keyframes anim_blink_time {
             to {
             visibility: hidden;
             }
         }
-
-        #reginfo {
-            visibility: hidden;
-        }
     </style>  
     <script src="scripts/client.js"></script>
     <script>
-        var t = null;
-        const display = document.getElementById("timeDisplay");
+        var t;
+        var currentUser = "";
         function startTimer() {
-            display.innerText = "60 seconds";
-            display.style.color = "green";
-            document.getElementById("reginfo").style.visibility = "visible"
             let time = 60;
-            t = setInterval(() => {
+            var display = document.getElementById("timeDisplay");
+            display.innerHTML = `${currentUser}, you have <span id="time">${time}</span> seconds to join the voice chat or you will be skipped!`;
+            display.style.color = "black";
+            var d = document.getElementById("time")
+            d.style.color = "green"
+            return setInterval(function () {
                 time--;
-                display.innerText = `${time} seconds`;
+                d.innerText = time;
                 if (time == 30) {
-                    display.style.animation="anim_blink_time 1s steps(5, start) infinite";
-                    display.style.color="red";
+                    d.style.animation="anim_blink_time 1s steps(5, start) infinite";
+                    d.style.color="red";
                 } else if (time == 19) {
-                    display.style.animation="anim_blink_time .5s steps(5, start) infinite";
-                    display.style.color="red";
+                    d.style.animation="anim_blink_time .5s steps(5, start) infinite";
                 } else if (time == 10) {
-                    display.style.animation="anim_blink_time .25s steps(5, start) infinite";
+                    d.style.animation="anim_blink_time .25s steps(5, start) infinite";
                 }
                 else if (time == 0) {
-                    display.style.animation="";
+                    d.style.animation="";
                     display.innerText="";
                     clearInterval(t);
                 }
             }, 1000)
         }
-        var currentUser = "";
         const webClient = new Client("chatting", {
             "newPullVC": (data) => {
-                document.getElementById("tojoin").innerText = "to join the voice chat or you will be skipped!";
-                console.log("new pull received...?")
-                console.log(data.username);
-                startTimer();
-                document.getElementById("name").innerText = data.username;
+                currentUser = data.username;
+                t = startTimer();
             },
             "userJoinVC": () => {
+                var display = document.getElementById("timeDisplay");
                 clearInterval(t);
-                let name = document.getElementById("name").innerText;
-                document.getElementById("tojoin").innerText = "";
-                display.style.color = "black";
-                display.innerText = "been picked!";
+                display.innerText = `${currentUser} has been chosen!`
             }
         }) // New override options for my clients so I don't have to rewrite it every script lol
         setTimeout(async () => {
@@ -95,7 +76,8 @@
         <div style="text-align: center;">Now Picking Our Next Registrant!</div><br/>
         <div style="font-size: 30pt; text-align: center;">
             <span id="reginfo">
-            <span id="name">...</span>, you have <span id="timeDisplay">60 seconds</span><span id="tojoin">to join the voice chat or you will be skipped!</span>
+                <span id="timeDisplay">Waiting On BallBot...</span>
+            </span>
         </div>
     </div>
 </body>
